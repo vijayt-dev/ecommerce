@@ -1,11 +1,10 @@
-import React, { useMemo } from "react";
+import React from "react";
 import useFetch from "./useFetch";
 import { Link } from "react-router-dom";
 import Error from "./Error";
 import Loader from "./Loader";
 function Products() {
   const [data, isLoading, error] = useFetch("https://dummyjson.com/products/");
-  console.log(error);
   const CardComponent = () =>
     data?.products.map((value) => {
       const { id } = value;
@@ -14,7 +13,6 @@ function Products() {
       const { category } = value;
       const { thumbnail } = value;
       const path = `/product/${id}`;
-      console.log("Component");
       return (
         <div key={id} className="card">
           <img
@@ -37,9 +35,7 @@ function Products() {
               {category}
             </span>
             <p className="card-text mt-2 fw-bold">${price}</p>
-            <a href="#" className="btn btn-primary">
-              Add to cart
-            </a>
+            <button className="btn btn-primary">Add to cart</button>
           </div>
         </div>
       );

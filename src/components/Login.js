@@ -1,35 +1,27 @@
-import React, { useState,useContext,useEffect, useMemo } from "react";
-import AuthContext from "./AuthProvider";
+import React, { useState } from "react";
+import { useAuth } from "./AuthProvider";
 import Error from "./Error";
 
-
 function Login() {
-  const { setAuth } = useContext(AuthContext);
-  const url = "https://dummyjson.com/auth/login'"
-
   const [userLogin, setUserLogin] = useState({
     email: "",
     password: "",
   });
-  const [fetchData,setFetchData] = useState({
-    data: null,
-    isLoading: true,
-    error: null
-});
-  const handleError = (email, password) => {
+  const auth = useAuth();
+  const handleError = ({ email, password }) => {
     if (email && password) {
-      setLoginError(false);
-    } else {
       setLoginError(true);
+      auth.setUser(userLogin);
+      auth.login(userLogin);
+    } else {
+      setLoginError(false);
     }
   };
 
-  let [LoginError, setLoginError] = useState(null);
+  let [isLogin, setLoginError] = useState(null);
   const handleClick = (e) => {
     e.preventDefault();
-    handleError(userLogin.email,userLogin.password)
-
-
+    handleError(userLogin);
   };
   return (
     <div className="container">
@@ -40,6 +32,7 @@ function Login() {
           </label>
           <input
             type="email"
+            autoComplete="off"
             className="form-control"
             id="email"
             placeholder="name@example.com"
@@ -70,7 +63,7 @@ function Login() {
           </button>
         </div>
       </form>
-      {LoginError && <Error errorMessage="Fill all the Details" />}
+      {isLogin === false && <Error errorMessage="Fill all the Details" />}
     </div>
   );
 }
