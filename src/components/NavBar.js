@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import { NavLink } from "react-router-dom";
+import { ThemeContext } from "../App";
 import { useAuth } from "./AuthProvider";
 function NavBar() {
   const auth = useAuth();
   const user = auth.getUserLogin();
+  const {theme,toggleTheme} = useContext(ThemeContext);
+
   const handleClear = () => {
     auth.logout();
   };
@@ -43,15 +46,15 @@ function NavBar() {
                 </NavLink>
               </li>
               {user && (
-                <li className="nav-item">
+                <li className="nav-item me-2">
                   <NavLink to="profile" className="nav-link">
                     Profile
                   </NavLink>
                 </li>
               )}
-              <li className="nav-item">
+              <li className="nav-item me-2">
                 {user ? (
-                  <button onClick={handleClear} className="btn btn-primary">
+                  <button onClick={handleClear} className="btn btn-primary me-2">
                     Logout
                   </button>
                 ) : (
@@ -59,6 +62,21 @@ function NavBar() {
                     Login
                   </NavLink>
                 )}
+              </li>
+              <li className="nav-item">
+                <div className="form-check form-switch pt-2 pb-2">
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    role="switch"
+                    id="theme"
+                    onChange={toggleTheme}
+                    checked={theme === "dark"}
+                  />
+                  <label className="form-check-label" htmlFor="theme">
+                  {theme === "light" ? "Light Mode" : "Dark Mode"}
+                  </label>
+                </div>
               </li>
             </ul>
           </div>

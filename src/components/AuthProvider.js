@@ -16,10 +16,17 @@ export const AuthProvider = ({ children }) => {
     const user = localStorage.getItem("user_login");
     return user;
   };
+  const toggleTheme = (theme) => {
+    if (theme === "light") {
+      return "dark";
+    } else {
+      return "light";
+    }
+  };
 
   return (
     <AuthContext.Provider
-      value={{ user, getUserLogin, login, logout, setUser }}
+      value={{ user, getUserLogin, login, logout, setUser, toggleTheme }}
     >
       {children}
     </AuthContext.Provider>
